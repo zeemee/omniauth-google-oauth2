@@ -8,6 +8,7 @@ module OmniAuth
   module Strategies
     # Main class for Google OAuth2 strategy.
     class GoogleOauth2 < OmniAuth::Strategies::OAuth2
+      ALLOWED_ISSUERS = ['accounts.google.com', 'https://accounts.google.com'].freeze
       BASE_SCOPE_URL = 'https://www.googleapis.com/auth/'
       BASE_SCOPES = %w[profile email openid].freeze
       DEFAULT_SCOPE = 'email,profile'
@@ -19,7 +20,7 @@ module OmniAuth
       option :jwt_leeway, 60
       option :authorize_options, %i[access_type hd login_hint prompt request_visible_actions scope state redirect_uri include_granted_scopes openid_realm device_id device_name]
       option :authorized_client_ids, []
-      option :verify_iss, true
+      option :verify_iss, false # true
 
       option :client_options,
              site: 'https://oauth2.googleapis.com',
@@ -61,7 +62,6 @@ module OmniAuth
         if !options[:skip_jwt] && !access_token['id_token'].nil?
           hash[:id_info] = ::JWT.decode(
             access_token['id_token'], nil, false, verify_iss: options.verify_iss,
-                                                  iss: 'accounts.google.com',
                                                   verify_aud: true,
                                                   aud: options.client_id,
                                                   verify_sub: false,
