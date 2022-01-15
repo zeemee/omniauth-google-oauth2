@@ -10,8 +10,8 @@ module OmniAuth
     class GoogleOauth2 < OmniAuth::Strategies::OAuth2
       ALLOWED_ISSUERS = ['accounts.google.com', 'https://accounts.google.com'].freeze
       BASE_SCOPE_URL = 'https://www.googleapis.com/auth/'
-      BASE_SCOPES = %w[profile email openid].freeze
-      DEFAULT_SCOPE = 'email,profile'
+      BASE_SCOPES = %w[email].freeze
+      DEFAULT_SCOPE = 'email'
 
       option :name, 'google_oauth2'
       option :skip_friends, true
